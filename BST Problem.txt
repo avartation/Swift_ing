@@ -1,0 +1,62 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public var val: Int
+ *     public var left: TreeNode?
+ *     public var right: TreeNode?
+ *     public init(_ val: Int) {
+ *         self.val = val
+ *         self.left = nil
+ *         self.right = nil
+ *     }
+ * }
+ */
+class Solution {
+    
+    enum Direction {
+        case LEFT
+        case RIGHT
+    }
+    
+    func countRoot(val: Int, root: TreeNode?, dir: Direction, count: inout Int) {
+        guard let root = root else { return }
+        if root.val == val {
+            count += 1
+            countRoot(val: val, root: root.left, dir: dir, count: &count)
+            countRoot(val: val, root: root.right, dir: dir, count: &count)
+        }
+        else {    
+            switch dir {
+                case .LEFT:
+                countRoot(val: val, root: root.left, dir: dir, count: &count)
+                case .RIGHT:
+                countRoot(val: val, root: root.right, dir: dir, count: &count)
+                default:
+                break;
+            }
+        }
+    }
+    
+    func realSolver(root: TreeNode?, modes: inout [Int], currentModeCount: inout Int) {
+        var count = 1
+        guard let root = root else { return }
+        countRoot(val: root.val, root: root.left, dir: .RIGHT, count: &count)
+        countRoot(val: root.val, root: root.right, dir: .LEFT, count: &count)
+        if count == currentModeCount {
+            modes.append(root.val)
+        }
+        else if count > currentModeCount {
+            modes = [root.val]
+            currentModeCount = count
+        }
+        realSolver(root: root.left, modes: &modes, currentModeCount: &currentModeCount)
+        realSolver(root: root.right, modes: &modes, currentModeCount: &currentModeCount)
+    }
+    
+    func findMode(_ root: TreeNode?) -> [Int] {
+        var modes: [Int] = []
+        var currentModeCount = 0
+        realSolver(root: root, modes: &modes, currentModeCount: &currentModeCount);
+        return modes
+    }
+}
