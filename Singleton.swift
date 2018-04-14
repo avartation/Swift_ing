@@ -29,9 +29,6 @@ class Yerevan: City {
     public static func getInstance() -> Yerevan {
         return uniqueInstance
     }
-    public static func describe() {
-        uniqueInstance.describe()
-    }
 }
 
 class NewYork: City {
@@ -43,15 +40,12 @@ class NewYork: City {
     public static func getInstance() -> NewYork {
         return uniqueInstance
     }
-    public static func describe() {
-        uniqueInstance.describe()
-    }
 }
 
 
 
-Yerevan.describe()
-NewYork.describe()
+let YC = Yerevan.describe()
+let NYC = NewYork.describe()
 
-
-
+YC.describe()
+NYC.describe()
